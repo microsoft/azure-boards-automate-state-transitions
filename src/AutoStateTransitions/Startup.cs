@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoStateTransitions.Misc;
 using AutoStateTransitions.Models;
 using AutoStateTransitions.Repos;
 using Microsoft.AspNetCore.Builder;
@@ -45,6 +46,7 @@ namespace AutoStateTransitions
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddTransient<IWorkItemRepo, WorkItemRepo>();
+            services.AddTransient<IHelper, Helper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
