@@ -1,16 +1,16 @@
-﻿using AutoStateTransitions.Misc;
-using AutoStateTransitions.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Extensions.Options;
-using Microsoft.TeamFoundation.WorkItemTracking.Process.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using Microsoft.VisualStudio.Services.WebApi;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
+using Microsoft.VisualStudio.Services.WebApi.Patch.Json;
+using Microsoft.VisualStudio.Services.WebApi.Patch;
+using Microsoft.Extensions.Options;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using Microsoft.VisualStudio.Services.WebApi;
+
+using AutoStateTransitions.Misc;
+using AutoStateTransitions.Models;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 
 namespace AutoStateTransitions.Repos
 {
@@ -41,25 +41,69 @@ namespace AutoStateTransitions.Repos
             }
         }
 
-        public List<WorkItem> ListChildWorkItemsForParent(VssConnection connection, int parentId)
+        public List<WorkItem> ListChildWorkItemsForParent(VssConnection connection, WorkItem parentWorkItem)
         {
             WorkItemTrackingHttpClient client = connection.GetClient<WorkItemTrackingHttpClient>();
 
-            WorkItem item = client.GetWorkItemAsync(parentId, null, null, WorkItemExpand.Relations).Result;
-
-            IEnumerable<WorkItemRelation> children = item.Relations.Where<WorkItemRelation>(x => x.Rel.Equals("System.LinkTypes.Hierarchy-Forward"));
+            // get all the related child work item links
+            IEnumerable<WorkItemRelation> children = parentWorkItem.Relations.Where<WorkItemRelation>(x => x.Rel.Equals("System.LinkTypes.Hierarchy-Forward"));
             IList<int> Ids = new List<int>();
 
+            // loop through children and extract the id's the from the url
             foreach (var child in children)
             {
                 Ids.Add(this._helper.GetWorkItemIdFromUrl(child.Url));
             }
 
+            // in this case we only care about the state of the child work items
             string[] fields = new string[] { "System.State" };
 
+            // go get the full list of child work items with the desired fields
             List<WorkItem> list = client.GetWorkItemsAsync(Ids, fields).Result;
 
             return list;
+        }
+
+        public WorkItem UpdateWorkItemState(VssConnection connection, WorkItem workItem, string state)
+        {
+            JsonPatchDocument patchDocument = new JsonPatchDocument();
+
+            patchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Operation = Operation.Test,
+                    Path = "/rev",
+                    Value = workItem.Rev.ToString()
+                }
+            );
+
+            patchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Operation = Operation.Add,
+                    Path = "/fields/System.State",
+                    Value = state
+                }
+            );
+
+            WorkItemTrackingHttpClient client = connection.GetClient<WorkItemTrackingHttpClient>();
+            WorkItem result = null;
+
+            try
+            {
+                result = client.UpdateWorkItemAsync(patchDocument, Convert.ToInt32(workItem.Id)).Result;
+            }
+            catch (Exception ex)
+            {
+                result = null;
+            }
+            finally
+            {
+                connection = null;
+                client = null;
+            }
+
+            return result;
         }
 
         public void Dispose()
@@ -86,5 +130,7 @@ namespace AutoStateTransitions.Repos
     public interface IWorkItemRepo
     {
         WorkItem GetWorkItem(VssConnection connection, int id);
+        List<WorkItem> ListChildWorkItemsForParent(VssConnection connection, WorkItem parentWorkItem);
+        WorkItem UpdateWorkItemState(VssConnection connection, WorkItem workItem, string state);
     }
 }

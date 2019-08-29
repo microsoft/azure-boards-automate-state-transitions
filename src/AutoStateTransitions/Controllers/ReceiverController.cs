@@ -38,7 +38,7 @@ namespace AutoStateTransitions.Controllers
         }
 
         [HttpPost]
-        [Route("webhook/post")]
+        [Route("webhook/post/task")]
         public IActionResult Post([FromBody] JObject payload)
         {
             Int32 parentId;
@@ -59,11 +59,56 @@ namespace AutoStateTransitions.Controllers
             VssCredentials clientCredentials = new VssCredentials(new VssBasicCredential("username", vm.pat));
             VssConnection vssConnection = new VssConnection(baseUri, clientCredentials);
 
+            // load the work item posted 
             WorkItem workItem = this._workItemRepo.GetWorkItem(vssConnection, vm.workItemId);
+
+            // get the related parent
             WorkItemRelation parentRelation = workItem.Relations.Where<WorkItemRelation>(x => x.Rel.Equals("System.LinkTypes.Hierarchy-Reverse")).FirstOrDefault();
-
             parentId = this._helper.GetWorkItemIdFromUrl(parentRelation.Url);
+            WorkItem parentWorkItem = this._workItemRepo.GetWorkItem(vssConnection, parentId);
 
+            string parentState = parentWorkItem.Fields["System.State"] == null ? string.Empty : parentWorkItem.Fields["System.State"].ToString().ToLower();
+
+            // if a child item is being saved as active
+            if (vm.state.ToLower().Equals("active"))
+            {
+                // if the parent of item child is not active or resolved, then save it to active
+                if ((!parentState.Equals("active") || parentState.Equals("resolved")))
+                {
+                    this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, "Active");
+                }
+
+                return new OkResult();
+            }
+
+            // if we set the task back to new
+            if (vm.state.ToLower().Equals("new"))
+            {
+                // if the parent is closed, then we need to re-open it as active
+                if (parentState.Equals("closed"))
+                {
+                    this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, "Active");
+                }
+
+                return new OkResult();
+            }
+
+            // if we set the task to closed
+            if (vm.state.ToLower().Equals("closed"))
+            {
+                // get a list of all the child items to see if they are all closed or not
+                List<WorkItem> childWorkItems = this._workItemRepo.ListChildWorkItemsForParent(vssConnection, parentWorkItem);
+
+                // check to see if any of the child items are not closed, if so, we will get a count > 0
+                int count = childWorkItems.Where(x => !x.Fields["System.State"].ToString().ToLower().Equals("closed")).ToList().Count;
+
+                if (count.Equals(0))
+                {
+                    this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, "Closed");
+                }
+
+                return new OkResult();
+            }
 
             return new StandardResponseObjectResult("temp", StatusCodes.Status200OK);
         }
