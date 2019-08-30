@@ -54,6 +54,7 @@ namespace AutoStateTransitions.Controllers
                 return new OkResult();
             }
 
+            // create our azure devops connection
             Uri baseUri = new Uri("https://dev.azure.com/" + vm.organization);
 
             VssCredentials clientCredentials = new VssCredentials(new VssBasicCredential("username", vm.pat));
