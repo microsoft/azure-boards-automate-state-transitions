@@ -1,22 +1,23 @@
 {
-  "task": [
+  "type": "task",
+  "rules": [
     {
       "ifchildstate": "active",
       "notparentstates": [ "active", "resolved" ],
       "setparentstateto": "active",
-      "allchildren": "false"
+      "allchildren": false
     },
     {
       "ifchildstate": "new",
       "notparentstates": [ "active", "resolved", "new" ],
       "setparentstateto": "active",
-      "allchildren": "false"
+      "allchildren": false
     },
     {
       "ifchildstate": "closed",
       "notparentstates": [],
       "setparentstateto": "closed",
-      "allchildren": "true"
+      "allchildren": true
     }
   ]
 }

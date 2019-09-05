@@ -123,6 +123,7 @@ namespace AutoStateTransitions.Repos
             if (disposing)
             {
                 _appSettings = null;
+                _helper = null;
             }
         }
     }

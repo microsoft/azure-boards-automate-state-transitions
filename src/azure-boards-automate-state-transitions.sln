@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoStateTransitions", "AutoStateTransitions\AutoStateTransitions.csproj", "{54ED1158-23C3-4493-AB2B-3DA956C83CDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoStateTransitionsTest", "AutoStateTransitionsTest\AutoStateTransitionsTest.csproj", "{F8D21D5A-5372-49A6-8939-B3B1C8D95A09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoStateTransitionsTest", "AutoStateTransitionsTest\AutoStateTransitionsTest.csproj", "{F8D21D5A-5372-49A6-8939-B3B1C8D95A09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

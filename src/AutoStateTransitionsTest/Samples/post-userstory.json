@@ -1,0 +1,161 @@
+{
+  "subscriptionId": "d4fbcfeb-ef5d-4819-bdb2-89943d09a528",
+  "notificationId": 1,
+  "id": "be278bbc-652a-4fbc-ab62-cd646490884e",
+  "eventType": "workitem.updated",
+  "publisherId": "tfs",
+  "message": null,
+  "detailedMessage": null,
+  "resource": {
+    "id": 2,
+    "workItemId": 194,
+    "rev": 2,
+    "revisedBy": {
+      "id": "a3643d15-6656-41b5-828f-10bb956cca26",
+      "name": "Dan Hellem <dan_hellem@hotmail.com>",
+      "displayName": "Dan Hellem",
+      "url": "https://spsprodcus3.vssps.visualstudio.com/A1b3e9b27-3208-4ac4-b4e8-6c4f63b735f0/_apis/Identities/a3643d15-6656-41b5-828f-10bb956cca26",
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/basicprocess/_apis/GraphProfile/MemberAvatars/msa.OTgzNGQ5YmItZTNkOS03YjU3LWI2NjMtZGQ2OWMwNjc1ZjRh"
+        }
+      },
+      "uniqueName": "dan_hellem@hotmail.com",
+      "imageUrl": "https://dev.azure.com/basicprocess/_apis/GraphProfile/MemberAvatars/msa.OTgzNGQ5YmItZTNkOS03YjU3LWI2NjMtZGQ2OWMwNjc1ZjRh",
+      "descriptor": "msa.OTgzNGQ5YmItZTNkOS03YjU3LWI2NjMtZGQ2OWMwNjc1ZjRh"
+    },
+    "revisedDate": "9999-01-01T00:00:00Z",
+    "fields": {
+      "System.Rev": {
+        "oldValue": 1,
+        "newValue": 2
+      },
+      "System.AuthorizedDate": {
+        "oldValue": "2019-08-26T14:42:54.673Z",
+        "newValue": "2019-09-05T15:28:05.557Z"
+      },
+      "System.RevisedDate": {
+        "oldValue": "2019-09-05T15:28:05.557Z",
+        "newValue": "9999-01-01T00:00:00Z"
+      },
+      "System.State": {
+        "oldValue": "New",
+        "newValue": "Active"
+      },
+      "System.Reason": {
+        "oldValue": "New",
+        "newValue": "Implementation started"
+      },
+      "System.AssignedTo": {
+        "newValue": "Dan Hellem <dan_hellem@hotmail.com>"
+      },
+      "System.ChangedDate": {
+        "oldValue": "2019-08-26T14:42:54.673Z",
+        "newValue": "2019-09-05T15:28:05.557Z"
+      },
+      "System.Watermark": {
+        "oldValue": 595,
+        "newValue": 629
+      },
+      "System.BoardColumn": {
+        "oldValue": "New",
+        "newValue": "Active"
+      },
+      "Microsoft.VSTS.Common.StateChangeDate": {
+        "oldValue": "2019-08-26T14:42:54.673Z",
+        "newValue": "2019-09-05T15:28:05.557Z"
+      },
+      "Microsoft.VSTS.Common.ActivatedDate": {
+        "newValue": "2019-09-05T15:28:05.557Z"
+      },
+      "Microsoft.VSTS.Common.ActivatedBy": {
+        "newValue": "Dan Hellem <dan_hellem@hotmail.com>"
+      },
+      "WEF_2D808B8B1E8846A892636188CD38BC17_Kanban.Column": {
+        "oldValue": "New",
+        "newValue": "Active"
+      }
+    },
+    "_links": {
+      "self": {
+        "href": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194/updates/2"
+      },
+      "workItemUpdates": {
+        "href": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194/updates"
+      },
+      "parent": {
+        "href": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194"
+      },
+      "html": {
+        "href": "https://dev.azure.com/basicprocess/web/wi.aspx?pcguid=5086bf88-dcd7-4e57-9e07-04c5b5baa818&id=194"
+      }
+    },
+    "url": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194/updates/2",
+    "revision": {
+      "id": 194,
+      "rev": 2,
+      "fields": {
+        "System.AreaPath": "Franciscos",
+        "System.TeamProject": "Franciscos",
+        "System.IterationPath": "Franciscos\\Iteration 1",
+        "System.WorkItemType": "User Story",
+        "System.State": "Active",
+        "System.Reason": "Implementation started",
+        "System.AssignedTo": "Dan Hellem <dan_hellem@hotmail.com>",
+        "System.CreatedDate": "2019-08-26T14:42:54.673Z",
+        "System.CreatedBy": "Dan Hellem <dan_hellem@hotmail.com>",
+        "System.ChangedDate": "2019-09-05T15:28:05.557Z",
+        "System.ChangedBy": "Dan Hellem <dan_hellem@hotmail.com>",
+        "System.CommentCount": 0,
+        "System.Title": "User Story 2",
+        "System.BoardColumn": "Active",
+        "System.BoardColumnDone": false,
+        "Microsoft.VSTS.Common.StateChangeDate": "2019-09-05T15:28:05.557Z",
+        "Microsoft.VSTS.Common.ActivatedDate": "2019-09-05T15:28:05.557Z",
+        "Microsoft.VSTS.Common.ActivatedBy": "Dan Hellem <dan_hellem@hotmail.com>",
+        "Microsoft.VSTS.Common.Priority": 2,
+        "Microsoft.VSTS.Common.ValueArea": "Business",
+        "WEF_2D808B8B1E8846A892636188CD38BC17_Kanban.Column": "Active",
+        "WEF_2D808B8B1E8846A892636188CD38BC17_Kanban.Column.Done": false
+      },
+      "relations": [
+        {
+          "rel": "System.LinkTypes.Hierarchy-Reverse",
+          "url": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/159",
+          "attributes": {
+            "isLocked": false,
+            "name": "Parent"
+          }
+        }
+      ],
+      "_links": {
+        "self": {
+          "href": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194/revisions/2"
+        },
+        "workItemRevisions": {
+          "href": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194/revisions"
+        },
+        "parent": {
+          "href": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194"
+        }
+      },
+      "url": "https://dev.azure.com/basicprocess/60c8b0ff-04c3-45a8-a4be-69b01cfe6da2/_apis/wit/workItems/194/revisions/2"
+    }
+  },
+  "resourceVersion": "1.0",
+  "resourceContainers": {
+    "collection": {
+      "id": "5086bf88-dcd7-4e57-9e07-04c5b5baa818",
+      "baseUrl": "https://dev.azure.com/basicprocess/"
+    },
+    "account": {
+      "id": "1b3e9b27-3208-4ac4-b4e8-6c4f63b735f0",
+      "baseUrl": "https://dev.azure.com/basicprocess/"
+    },
+    "project": {
+      "id": "60c8b0ff-04c3-45a8-a4be-69b01cfe6da2",
+      "baseUrl": "https://dev.azure.com/basicprocess/"
+    }
+  },
+  "createdDate": "2019-09-05T15:28:12.4629579Z"
+}

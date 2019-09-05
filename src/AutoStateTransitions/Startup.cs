@@ -45,8 +45,11 @@ namespace AutoStateTransitions
             });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            services.AddTransient<IWorkItemRepo, WorkItemRepo>();
             services.AddTransient<IHelper, Helper>();
+
+            services.AddTransient<IWorkItemRepo, WorkItemRepo>();
+            services.AddTransient<IRulesRepo, RulesRepo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
