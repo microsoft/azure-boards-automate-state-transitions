@@ -22,6 +22,3 @@ jobs:
       
     - name: Test with dotnet
       run: dotnet test src --configuration Release
-    
-    - name: Publish with dotnet
-      run: dotnet publish src --configuration Release
