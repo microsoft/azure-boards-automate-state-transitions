@@ -1,4 +1,4 @@
-![badge](https://action-badges.now.sh/microsoft/azure-boards-automate-state-transitions)
+![my badge](https://action-badges.now.sh/microsoft/azure-boards-automate-state-transitions)
 
 # Contributing
 
