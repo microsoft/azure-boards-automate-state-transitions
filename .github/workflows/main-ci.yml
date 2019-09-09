@@ -15,13 +15,13 @@ jobs:
         dotnet-version: 2.2.401
     
     - name: Restore with dotnet
-      run: dotnet restore 
+      run: dotnet restore src
     
     - name: Build with dotnet
-      run: dotnet build --configuration Release
+      run: dotnet build src --configuration Release
       
     - name: Test with dotnet
-      run: dotnet test --configuration Release
+      run: dotnet test src --configuration Release
     
     - name: Publish with dotnet
-      run: dotnet publish --configuration Release
+      run: dotnet publish src --configuration Release
