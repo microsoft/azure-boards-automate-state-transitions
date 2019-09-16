@@ -15,7 +15,7 @@ For example, if your User Story is New and you create a task and set that task t
     "AppSettings": {
     "PersonalAccessToken": "<personal access token>",
     "Organization": "",
-    "SourceForRules": ""
+    "SourceForRules": "https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/"
     ```  
 
 3. Deploy the project so that it is available from the Azure DevOps instance.
@@ -23,6 +23,7 @@ For example, if your User Story is New and you create a task and set that task t
 4. Create a new web hook for the child work item types. In this example we are just setting up web hooks for when Task work items are updated. The web hook should send when the state field is changed.
 
    ![](./media/web-hooks-1.png)
+
 
    ![](./media/web-hooks-2.png)
 
@@ -88,6 +89,16 @@ For example, if your User Story is New and you create a task and set that task t
     },
     ````
 
+6. Point to the correct url for your rules files. By default the rules files are [stored in this location](https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/). You can edit the location in the [appsettings.json](https://github.com/microsoft/azure-boards-automate-state-transitions/blob/master/src/AutoStateTransitions/appsettings.json) file.
+
+    ```
+    "AppSettings": {
+    "PersonalAccessToken": "<personal access token>",
+    "Organization": "",
+    "SourceForRules": "https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/"
+    ```  
+
+   ***Note: Rule files have only been setup for User Story and Task.***  
 
 # Contributing
 

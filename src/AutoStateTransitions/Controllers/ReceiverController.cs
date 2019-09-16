@@ -80,6 +80,7 @@ namespace AutoStateTransitions.Controllers
             // load rules for updated work item
             RulesModel rulesModel = this._rulesRepo.ListRules(vm.workItemType);
 
+            //loop through each rule
             foreach (var rule in rulesModel.Rules)
             {
                 if (rule.IfChildState.Equals(vm.state))
@@ -108,48 +109,7 @@ namespace AutoStateTransitions.Controllers
                 }
             }
 
-            // if a child item is being saved as active
-            //if (vm.state.ToLower().Equals("active"))
-            //{
-            //    // if the parent of item child is not active or resolved, then save it to active
-            //    if ((!parentState.Equals("active") || parentState.Equals("resolved")))
-            //    {
-            //        this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, "Active");
-            //    }
-
-            //    return new OkResult();
-            //}
-
-            // if we set the task back to new
-            //if (vm.state.ToLower().Equals("new"))
-            //{
-            //    // if the parent is closed, then we need to re-open it as active
-            //    if (parentState.Equals("closed"))
-            //    {
-            //        this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, "Active");
-            //    }
-
-            //    return new OkResult();
-            //}
-
-            // if we set the task to closed
-            //if (vm.state.ToLower().Equals("closed"))
-            //{
-            //    // get a list of all the child items to see if they are all closed or not
-            //    List<WorkItem> childWorkItems = this._workItemRepo.ListChildWorkItemsForParent(vssConnection, parentWorkItem);
-
-            //    // check to see if any of the child items are not closed, if so, we will get a count > 0
-            //    int count = childWorkItems.Where(x => !x.Fields["System.State"].ToString().ToLower().Equals("closed")).ToList().Count;
-
-            //    if (count.Equals(0))
-            //    {
-            //        this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, "Closed");
-            //    }
-
-            //    return new OkResult();
-            //}
-
-            return new StandardResponseObjectResult("temp", StatusCodes.Status200OK);
+            return new StandardResponseObjectResult("success", StatusCodes.Status200OK);
         }
 
         private PayloadViewModel BuildPayloadViewModel(JObject body)
