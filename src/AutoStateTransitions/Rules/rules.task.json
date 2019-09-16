@@ -1,23 +1,23 @@
 {
-  "type": "task",
+  "type": "Task",
   "rules": [
     {
-      "ifchildstate": "active",
-      "notparentstates": [ "active", "resolved" ],
-      "setparentstateto": "active",
-      "allchildren": false
+      "ifChildState": "Active",
+      "notParentStates": [ "Active", "Resolved" ],
+      "setParentStateTo": "Active",
+      "allChildren": false
     },
     {
-      "ifchildstate": "new",
-      "notparentstates": [ "active", "resolved", "new" ],
-      "setparentstateto": "active",
-      "allchildren": false
+      "ifChildState": "New",
+      "notParentStates": [ "Active", "Resolved", "New" ],
+      "setParentStateTo": "Active",
+      "allChildren": false
     },
     {
-      "ifchildstate": "closed",
-      "notparentstates": [],
-      "setparentstateto": "closed",
-      "allchildren": true
+      "ifChildState": "Closed",
+      "notParentStates": [],
+      "setParentStateTo": "Closed",
+      "allChildren": true
     }
   ]
 }
