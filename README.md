@@ -1,6 +1,6 @@
 ![my badge](https://action-badges.now.sh/microsoft/azure-boards-automate-state-transitions)
 
-# Automate State Transitions
+# Azure Boards - Automate State Transitions
 This project was created to help automate the updating of parent state transitions depending on the state of the child work items.
 
 This API recieves an Azure Boards work item update web hook event. The API will load the work item, check against a series of rules, and update it's parent work item accordingly. 
