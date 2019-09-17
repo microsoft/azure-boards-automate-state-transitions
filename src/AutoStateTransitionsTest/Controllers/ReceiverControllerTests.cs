@@ -6,6 +6,7 @@ using System.Text;
 using Moq;
 using AutoStateTransitions.Repos;
 using AutoStateTransitions.Misc;
+using AutoStateTransitions.Repos.Interfaces;
 
 namespace AutoStateTransitionsTest.Controllers
 {
