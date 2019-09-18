@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.Services.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using AutoStateTransitions.Misc;
 using System.Security.Cryptography.X509Certificates;
+using AutoStateTransitions.Repos.Interfaces;
 
 namespace AutoStateTransitions.Controllers
 {
@@ -27,10 +28,10 @@ namespace AutoStateTransitions.Controllers
     [ApiController]
     public class RecieverController : ControllerBase
     {
-        IWorkItemRepo _workItemRepo;
-        IRulesRepo _rulesRepo;
-        IOptions<AppSettings> _appSettings;
-        IHelper _helper;
+        private readonly IWorkItemRepo _workItemRepo;
+        private readonly IRulesRepo _rulesRepo;
+        private readonly IOptions<AppSettings> _appSettings;
+        private readonly IHelper _helper;
 
         public RecieverController(IWorkItemRepo workItemRepo, IRulesRepo rulesRepo, IHelper helper, IOptions<AppSettings> appSettings)
         {
@@ -42,9 +43,9 @@ namespace AutoStateTransitions.Controllers
 
         [HttpPost]
         [Route("webhook/workitem/update")]
-        public IActionResult Post([FromBody] JObject payload)
+        public async Task<IActionResult> Post([FromBody] JObject payload)
         {
-            PayloadViewModel vm = this.BuildPayloadViewModel(payload);
+            PayloadViewModel vm = BuildPayloadViewModel(payload);
 
             //make sure pat is not empty, if it is, pull from appsettings
             vm.pat = _appSettings.Value.PersonalAccessToken;
@@ -59,7 +60,7 @@ namespace AutoStateTransitions.Controllers
             VssConnection vssConnection = new VssConnection(baseUri, clientCredentials);
 
             // load the work item posted 
-            WorkItem workItem = this._workItemRepo.GetWorkItem(vssConnection, vm.workItemId);
+            WorkItem workItem = await _workItemRepo.GetWorkItem(vssConnection, vm.workItemId);
 
             // this should never happen, but if we can't load the work item from the id, then exit with error
             if (workItem == null) return new StandardResponseObjectResult("Error loading workitem '" + vm.workItemId + "'", StatusCodes.Status500InternalServerError);
@@ -70,15 +71,15 @@ namespace AutoStateTransitions.Controllers
             // if we don't have any parents to worry about, then just abort
             if (parentRelation == null) return new OkResult();
 
-            Int32 parentId = this._helper.GetWorkItemIdFromUrl(parentRelation.Url);
-            WorkItem parentWorkItem = this._workItemRepo.GetWorkItem(vssConnection, parentId);
+            Int32 parentId = _helper.GetWorkItemIdFromUrl(parentRelation.Url);
+            WorkItem parentWorkItem = await _workItemRepo.GetWorkItem(vssConnection, parentId);
 
             if (parentWorkItem == null) return new StandardResponseObjectResult("Error loading parent work item '" + parentId.ToString() + "'", StatusCodes.Status500InternalServerError);
 
             string parentState = parentWorkItem.Fields["System.State"] == null ? string.Empty : parentWorkItem.Fields["System.State"].ToString();
 
             // load rules for updated work item
-            RulesModel rulesModel = this._rulesRepo.ListRules(vm.workItemType);
+            RulesModel rulesModel = _rulesRepo.ListRules(vm.workItemType);
 
             //loop through each rule
             foreach (var rule in rulesModel.Rules)
@@ -89,19 +90,20 @@ namespace AutoStateTransitions.Controllers
                     {
                         if (!rule.NotParentStates.Contains(parentState))
                         {
-                            this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, rule.SetParentStateTo);
+                            await _workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, rule.SetParentStateTo);
                             return new OkResult();
                         }
                     }
                     else
                     {
                         // get a list of all the child items to see if they are all closed or not
-                        List<WorkItem> childWorkItems = this._workItemRepo.ListChildWorkItemsForParent(vssConnection, parentWorkItem);
+                        List<WorkItem> childWorkItems = await _workItemRepo.ListChildWorkItemsForParent(vssConnection, parentWorkItem);
 
                         // check to see if any of the child items are not closed, if so, we will get a count > 0
                         int count = childWorkItems.Where(x => !x.Fields["System.State"].ToString().Equals(rule.IfChildState)).ToList().Count;
 
-                        if (count.Equals(0)) this._workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, rule.SetParentStateTo);
+                        if (count.Equals(0))
+                            await _workItemRepo.UpdateWorkItemState(vssConnection, parentWorkItem, rule.SetParentStateTo);
 
                         return new OkResult();
                     }
