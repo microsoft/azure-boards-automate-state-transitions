@@ -25,3 +25,13 @@ jobs:
       
     - name: Test with dotnet
       run: dotnet test src --configuration Release
+      
+    - name: Publish with dotnet
+      run: dotnet publish src/AutoStateTransitions/AutoStateTransitions.csproj --configuration Release --output ./publish-output
+      
+    - name: Deploy to Azure
+      uses: azure/appservice-actions/webapp@master
+      with: 
+        app-name: automate-state-transitions
+        publish-profile: $
+        package: ./publish-output
