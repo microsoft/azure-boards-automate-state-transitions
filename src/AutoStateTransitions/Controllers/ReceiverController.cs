@@ -24,16 +24,16 @@ using AutoStateTransitions.Repos.Interfaces;
 
 namespace AutoStateTransitions.Controllers
 {
-    [Route("api/reciever")]
+    [Route("api/receiver")]
     [ApiController]
-    public class RecieverController : ControllerBase
+    public class ReceiverController : ControllerBase
     {
         private readonly IWorkItemRepo _workItemRepo;
         private readonly IRulesRepo _rulesRepo;
         private readonly IOptions<AppSettings> _appSettings;
         private readonly IHelper _helper;
 
-        public RecieverController(IWorkItemRepo workItemRepo, IRulesRepo rulesRepo, IHelper helper, IOptions<AppSettings> appSettings)
+        public ReceiverController(IWorkItemRepo workItemRepo, IRulesRepo rulesRepo, IHelper helper, IOptions<AppSettings> appSettings)
         {
             _workItemRepo = workItemRepo;
             _rulesRepo = rulesRepo;
