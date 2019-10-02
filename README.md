@@ -24,7 +24,7 @@ For example, if your User Story is New and you create a task and set that task t
 
    ![](./media/web-hooks-1.png)
    
-Populate the URL Field with the url from the deployed instance carried out in previous step along with /api/reciever/webhook/workitem/update appened.
+Populate the URL Field with the url from the deployed instance carried out in previous step along with /api/receiver/webhook/workitem/update appened.
 
    ![](./media/web-hooks-2.png)
 
