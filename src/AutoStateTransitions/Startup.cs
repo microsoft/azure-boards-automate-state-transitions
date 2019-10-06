@@ -12,15 +12,17 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace AutoStateTransitions
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, IConfiguration config)
+        public Startup(IWebHostEnvironment env, IConfiguration config)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -33,16 +35,16 @@ namespace AutoStateTransitions
         }
 
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Azure DevOps - Automate State Transitions", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Azure DevOps - Automate State Transitions", Version = "v1" });
             });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
@@ -51,10 +53,13 @@ namespace AutoStateTransitions
             services.AddTransient<IWorkItemRepo, WorkItemRepo>();
             services.AddTransient<IRulesRepo, RulesRepo>();
 
+            services.AddControllersWithViews();
+            services.AddHealthChecks();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -66,15 +71,21 @@ namespace AutoStateTransitions
             }
 
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Azure DevOps - Automate State Transitions");
-                //c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseCors();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapHealthChecks("/health");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
