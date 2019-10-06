@@ -18,7 +18,7 @@ For example, if your User Story is New and you create a task and set that task t
     "SourceForRules": "https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/"
     ```  
 
-3. Deploy the project so that it is available from the Azure DevOps instance.
+3. Deploy the project so that it is available from the Azure DevOps instance. Be sure to check if DotNetCore 3 is available (either by using the Azure WebApp Extension, or by deploying it with the package (see [blog on self-contained](https://timheuer.com/blog/archive/2019/10/03/deploy-aspnet-core-applications-using-self-contained-dotnet-core.aspx) ))
 
 4. Create a new web hook for the child work item types. In this example we are just setting up web hooks for when Task work items are updated. The web hook should send when the state field is changed.
 
