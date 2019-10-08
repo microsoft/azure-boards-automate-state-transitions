@@ -1,12 +1,13 @@
 ﻿using AutoStateTransitions.Misc;
 using AutoStateTransitions.Models;
+using AutoStateTransitions.Repos.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AutoStateTransitions.Repos
@@ -15,24 +16,24 @@ namespace AutoStateTransitions.Repos
     {
         private IOptions<AppSettings> _appSettings;
         private IHelper _helper;
+        private HttpClient _httpClient;
 
-        public RulesRepo(IOptions<AppSettings> appSettings, IHelper helper)
+        public RulesRepo(IOptions<AppSettings> appSettings, IHelper helper, HttpClient httpClient)
         {
             _appSettings = appSettings;
             _helper = helper;
+            _httpClient = httpClient;
         }
 
-        public RulesModel ListRules(string wit)
+        public async Task<RulesModel> ListRules(string wit)
         {
             string src = _appSettings.Value.SourceForRules;
 
-            using (WebClient wc = new WebClient())
-            {
-                var json = wc.DownloadString(src + "/rules." + wit.ToLower() + ".json");
-                RulesModel rules = JsonConvert.DeserializeObject<RulesModel>(json);
+            var json = await _httpClient.GetStringAsync(src + "/rules." + wit.ToLower() + ".json");
+            RulesModel rules = JsonConvert.DeserializeObject<RulesModel>(json);
 
-                return rules;
-            }
+            return rules;
+            
         }
 
         public void Dispose()
@@ -57,8 +58,4 @@ namespace AutoStateTransitions.Repos
         }
     }
 
-    public interface IRulesRepo
-    {
-        RulesModel ListRules(string wit);
-    }
 }

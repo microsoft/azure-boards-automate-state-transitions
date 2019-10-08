@@ -40,6 +40,7 @@ namespace AutoStateTransitions
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddHttpClient<IRulesRepo, RulesRepo>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Azure DevOps - Automate State Transitions", Version = "v1" });
