@@ -79,7 +79,7 @@ namespace AutoStateTransitions.Controllers
             string parentState = parentWorkItem.Fields["System.State"] == null ? string.Empty : parentWorkItem.Fields["System.State"].ToString();
 
             // load rules for updated work item
-            RulesModel rulesModel = _rulesRepo.ListRules(vm.workItemType);
+            RulesModel rulesModel = await _rulesRepo.ListRules(vm.workItemType);
 
             //loop through each rule
             foreach (var rule in rulesModel.Rules)
