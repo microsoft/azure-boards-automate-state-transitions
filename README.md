@@ -1,4 +1,4 @@
-![my badge](https://action-badges.now.sh/microsoft/azure-boards-automate-state-transitions)
+![Automate State Transitions CI](https://github.com/microsoft/azure-boards-automate-state-transitions/workflows/Automate%20State%20Transitions%20CI/badge.svg?branch=master)
 
 # Azure Boards - Automate State Transitions
 
