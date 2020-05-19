@@ -1,32 +1,35 @@
 ![my badge](https://action-badges.now.sh/microsoft/azure-boards-automate-state-transitions)
 
 # Azure Boards - Automate State Transitions
+
 This project was created to help automate the updating of parent state transitions depending on the state of the child work items.
 
-This API receives an Azure Boards work item update web hook event. The API will load the work item, check against a series of rules, and update it's parent work item accordingly. 
+This API receives an Azure Boards work item update web hook event. The API will load the work item, check against a series of rules, and update it's parent work item accordingly.
 
 For example, if your User Story is New and you create a task and set that task to active, the User Story should automatically be set to Active.
 
 # Setup
+
 1. Create a new Azure DevOps [Personal Access Token](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate)
 
 2. Include the Personal Access Token into the appsettings.json file
+
    ```
     "AppSettings": {
     "PersonalAccessToken": "<personal access token>",
     "Organization": "",
     "SourceForRules": "https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/"
-    ```  
+   ```
 
-3. Deploy the project so that it is available from the Azure DevOps instance.
+3. Deploy the project so that it is available from the Azure DevOps instance. Be sure to check if DotNetCore 3 is available (either by using the Azure WebApp Extension, or by deploying it with the package (see [blog on self-contained](https://timheuer.com/blog/archive/2019/10/03/deploy-aspnet-core-applications-using-self-contained-dotnet-core.aspx) ))
 
 4. Create a new web hook for the child work item types. In this example we are just setting up web hooks for when Task work items are updated. The web hook should send when the state field is changed.
 
    ![](./media/web-hooks-1.png)
-   
+
 Populate the URL Field with the url from the deployed instance carried out in previous step along with /api/receiver/webhook/workitem/update appened.
 
-   ![](./media/web-hooks-2.png)
+![](./media/web-hooks-2.png)
 
 5. Update the rules in the JSON configuration file for each child work item type. In this example we are going to update the Task (rule.task.json). You will need an entry for each state.
 
@@ -54,56 +57,56 @@ Populate the URL Field with the url from the deployed instance carried out in pr
         }
       ]
     }
-    ```
-    
-    **ifChildStates**: If the the work item status is this
+   ```
 
-    **notParentStates**: If the parent state is not one of these
+   **ifChildStates**: If the the work item status is this
 
-    **setParentStateTo**: Then set the parent state to this
+   **notParentStates**: If the parent state is not one of these
 
-    **allChildren**: If true, then all child items need to be this state to update the parent
+   **setParentStateTo**: Then set the parent state to this
 
-    #### Example 1
+   **allChildren**: If true, then all child items need to be this state to update the parent
 
-    User Story is set to New and it has 4 Tasks that are also new. As soon as a task is set to "Active" then set the User Story to "Active".
+   #### Example 1
 
-    ```
-    {
-      "ifChildState": "Active",
-      "notParentStates": [ "Active", "Resolved" ],
-      "setParentStateTo": "Active",
-      "allChildren": false
-    },
-    ````
+   User Story is set to New and it has 4 Tasks that are also new. As soon as a task is set to "Active" then set the User Story to "Active".
 
-    #### Example 2
+   ```
+   {
+     "ifChildState": "Active",
+     "notParentStates": [ "Active", "Resolved" ],
+     "setParentStateTo": "Active",
+     "allChildren": false
+   },
+   ```
 
-    If User Story is "Active" and all the child Tasks are set to "Closed". Then lets set the User Story to "Closed"
+   #### Example 2
 
-     ```
-    {
-      "ifChildState": "Closed",
-      "notParentStates": [],
-      "setParentStateTo": "Closed",
-      "allChildren": false
-    },
-    ````
+   If User Story is "Active" and all the child Tasks are set to "Closed". Then lets set the User Story to "Closed"
+
+   ```
+   {
+    "ifChildState": "Closed",
+    "notParentStates": [],
+    "setParentStateTo": "Closed",
+    "allChildren": false
+   },
+   ```
 
 6. Point to the correct url for your rules files. By default the rules files are [stored in this location](https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/). You can edit the location in the [appsettings.json](https://github.com/microsoft/azure-boards-automate-state-transitions/blob/master/src/AutoStateTransitions/appsettings.json) file.
 
-    ```
-    "AppSettings": {
-    "PersonalAccessToken": "<personal access token>",
-    "Organization": "",
-    "SourceForRules": "https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/"
-    ```  
+   ```
+   "AppSettings": {
+   "PersonalAccessToken": "<personal access token>",
+   "Organization": "",
+   "SourceForRules": "https://raw.githubusercontent.com/microsoft/azure-boards-automate-state-transitions/master/src/AutoStateTransitions/Rules/"
+   ```
 
-   ***Note: Rule files have only been setup for User Story and Task.***  
+   **_Note: Rule files have only been setup for User Story and Task._**
 
 # Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
