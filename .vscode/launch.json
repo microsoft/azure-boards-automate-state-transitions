@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/AutoStateTransitions/bin/Debug/netcoreapp2.2/AutoStateTransitions.dll",
+            "program": "${workspaceFolder}/src/AutoStateTransitions/bin/Debug/netcoreapp3.1/AutoStateTransitions.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/AutoStateTransitions",
             "stopAtEntry": false,
