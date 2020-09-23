@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Net.Http;
 
 namespace AutoStateTransitions
 {
@@ -45,7 +46,7 @@ namespace AutoStateTransitions
 
             services.AddTransient<IWorkItemRepo, WorkItemRepo>();
             services.AddTransient<IRulesRepo, RulesRepo>();
-
+            services.AddSingleton<HttpClient>(new HttpClient());
             services.AddControllersWithViews();
             services.AddHealthChecks();
 
